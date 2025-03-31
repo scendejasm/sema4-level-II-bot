@@ -9,6 +9,9 @@ from RPA.Tables import Tables
 from RPA.PDF import PDF
 from RPA.FileSystem import FileSystem
 
+# Add Robot Assistants in Control Room
+from RPA.Assistant import Assistant
+
 @task
 def order_robots_from_RobotSpareBin():
     """Orders robots from RobotSpareBin Industries Inc.
@@ -19,14 +22,23 @@ def order_robots_from_RobotSpareBin():
     """
     browser.configure(
         #slowmo=200,
-        screenshot="on"
+        screenshot="off" # Change back to on for demo ;)
     )
     open_the_robot_order_website()
     #print(get_orders())
     get_orders()
     place_orders()
     archive_receipts()
-   
+
+# Used in conjuction with Robot Assistants in Control Room
+def user_input_task():
+    assistant = Assistant()
+    assistant.add_heading("Input from user")
+    assistant.add_text_input("text_input", plaeholder="Please enter URL")
+    assistant.add_submit_buttons("Submit", default="Submit")
+    result = assistant.run_dialog()
+    url = result.text_input
+    open_robot_order_website(url)
 
 def open_the_robot_order_website():
     """Navigates to the given URL"""
